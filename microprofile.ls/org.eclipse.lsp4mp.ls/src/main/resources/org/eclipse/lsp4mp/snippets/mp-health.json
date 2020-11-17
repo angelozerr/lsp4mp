@@ -2,9 +2,7 @@
   "MicroProfile readiness check": {
     "prefix": "mpreadiness",
     "body": [
-      "package ${1:packagename};",
-      "",
-      "import org.eclipse.microprofile.health.HealthCheck;",
+      "${packagename}import org.eclipse.microprofile.health.HealthCheck;",
       "import org.eclipse.microprofile.health.HealthCheckResponse;",
       "import org.eclipse.microprofile.health.Readiness;",
       "",

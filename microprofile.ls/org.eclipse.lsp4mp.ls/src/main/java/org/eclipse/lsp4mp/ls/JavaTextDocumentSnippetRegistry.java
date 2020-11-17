@@ -14,12 +14,20 @@
 package org.eclipse.lsp4mp.ls;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiPredicate;
 
+import org.eclipse.lsp4j.CompletionItem;
+import org.eclipse.lsp4mp.ls.JavaTextDocuments.JavaTextDocument;
+import org.eclipse.lsp4mp.ls.commons.BadLocationException;
+import org.eclipse.lsp4mp.ls.commons.snippets.ISnippetContext;
 import org.eclipse.lsp4mp.ls.commons.snippets.Snippet;
 import org.eclipse.lsp4mp.ls.commons.snippets.TextDocumentSnippetRegistry;
 import org.eclipse.lsp4mp.snippets.LanguageId;
 import org.eclipse.lsp4mp.snippets.SnippetContextForJava;
+import org.eclipse.lsp4mp.utils.StringUtils;
 
 /**
  * Java snippet registry.
@@ -29,10 +37,15 @@ import org.eclipse.lsp4mp.snippets.SnippetContextForJava;
  */
 public class JavaTextDocumentSnippetRegistry extends TextDocumentSnippetRegistry {
 
+	private static final String PACKAGENAME_KEY = "packagename";
 	private List<String> types;
 
 	public JavaTextDocumentSnippetRegistry() {
-		super(LanguageId.java.name());
+		this(true);
+	}
+
+	public JavaTextDocumentSnippetRegistry(boolean loadDefault) {
+		super(LanguageId.java.name(), loadDefault);
 	}
 
 	/**
@@ -66,5 +79,29 @@ public class JavaTextDocumentSnippetRegistry extends TextDocumentSnippetRegistry
 			}
 		}
 		return types;
+	}
+
+	public List<CompletionItem> getCompletionItems(JavaTextDocument document, int completionOffset,
+			boolean canSupportMarkdown, boolean snippetsSupported,
+			BiPredicate<ISnippetContext<?>, Map<String, String>> contextFilter) {
+		Map<String, String> model = new HashMap<>();
+		// fill package name to replace in the snippets
+		String packageStatement = "";
+		if (!StringUtils.isEmpty(document.getPackageName())) {
+			String lineDelimiter = System.lineSeparator();
+			try {
+				lineDelimiter = document.lineDelimiter(0);
+			} catch (BadLocationException e) {
+			}
+			packageStatement = new StringBuilder("package ")//
+					.append(document.getPackageName()) //
+					.append(";") //
+					.append(lineDelimiter) //
+					.append(lineDelimiter) //
+					.toString();
+		}
+		model.put(PACKAGENAME_KEY, packageStatement);
+		return super.getCompletionItems(document, completionOffset, canSupportMarkdown, snippetsSupported,
+				contextFilter, model);
 	}
 }

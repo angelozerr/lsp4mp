@@ -1,30 +1,33 @@
 /*******************************************************************************
 * Copyright (c) 2020 Red Hat Inc. and others.
+* All rights reserved. This program and the accompanying materials
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v20.html
 *
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v. 2.0 which is available at
-* http://www.eclipse.org/legal/epl-2.0, or the Apache License, Version 2.0
-* which is available at https://www.apache.org/licenses/LICENSE-2.0.
-*
-* SPDX-License-Identifier: EPL-2.0 OR Apache-2.0
-*
+* SPDX-License-Identifier: EPL-2.0
+* 
 * Contributors:
 *     Red Hat Inc. - initial API and implementation
 *******************************************************************************/
 package org.eclipse.lsp4mp.ls.commons.snippets;
 
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.Map;
+import java.util.function.BiPredicate;
 
 /**
  * Snippet description (like vscode snippet).
- *
+ * 
  * @author Angelo ZERR
  *
  */
 public class Snippet {
 
+	private String label;
+
 	private List<String> prefixes;
+
+	private String suffix;
 
 	private List<String> body;
 
@@ -32,7 +35,17 @@ public class Snippet {
 
 	private String scope;
 
+	private String sortText;
+
 	private ISnippetContext<?> context;
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
 
 	public List<String> getPrefixes() {
 		return prefixes;
@@ -40,6 +53,14 @@ public class Snippet {
 
 	public void setPrefixes(List<String> prefixes) {
 		this.prefixes = prefixes;
+	}
+
+	public String getSuffix() {
+		return suffix;
+	}
+
+	public void setSuffix(String suffix) {
+		this.suffix = suffix;
 	}
 
 	public List<String> getBody() {
@@ -66,6 +87,14 @@ public class Snippet {
 		this.scope = scope;
 	}
 
+	public String getSortText() {
+		return sortText;
+	}
+
+	public void setSortText(String sortText) {
+		this.sortText = sortText;
+	}
+
 	public ISnippetContext<?> getContext() {
 		return context;
 	}
@@ -78,11 +107,12 @@ public class Snippet {
 		return getContext() != null;
 	}
 
-	public boolean match(Predicate<ISnippetContext<?>> contextFilter) {
+	public boolean match(BiPredicate<ISnippetContext<?>, Map<String, String>> contextFilter,
+			Map<String, String> model) {
 		if (!hasContext()) {
 			return true;
 		}
-		return contextFilter.test(getContext());
+		return contextFilter.test(getContext(), model);
 	}
 
 }
