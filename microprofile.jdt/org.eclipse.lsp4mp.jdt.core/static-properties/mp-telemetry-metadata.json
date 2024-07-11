@@ -1,0 +1,75 @@
+{
+	"properties": [
+		{
+			"type": "java.lang.String",
+			"defaultValue": "http://localhost:14250",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.exporter.jaeger.endpoint",
+			"description": "Sets the endpoint for the Jaeger exporter. The default is `http://localhost:14250`."
+		},
+		{
+			"type": "java.lang.Integer",
+			"defaultValue": "10000",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.exporter.jaeger.timeout",
+			"description": "Sets the maximum time, in milliseconds, that the Jaeger exporter waits for each batch export. The default is `10000`."
+		},
+		{
+			"type": "java.lang.String",
+			"defaultValue": "http://localhost:4317",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.exporter.otlp.endpoint",
+			"description": "Sets the endpoint for the OpenTelemetry Protocol (otlp) exporter. The default is `http://localhost:4317`."
+		},
+		{
+			"type": "java.lang.String",
+			"defaultValue": "http://localhost:9411/api/v2/spans",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.exporter.zipkin.endpoint",
+			"description": "Sets the endpoint for the Zipkin exporter. The default is `http://localhost:9411/api/v2/spans`."
+		},
+		{
+			"type": "java.lang.Boolean",
+			"defaultValue": "true",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.sdk.disabled",
+			"description": "Enables tracing by MicroProfile Telemetry. The default is `true`."
+		},
+		{
+			"type": "java.lang.String",
+			"defaultValue": "http://localhost:4317",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.service.name",
+			"description": "Sets of the name of the service that MicroProfile Telemetry is tracing."
+		},
+		{
+			"type": "java.lang.String",
+			"defaultValue": "http://localhost:4317",
+			"extensionName": "microprofile-telemetry-api",
+			"required": false,
+			"name": "otel.exporter.otlp.endpoint",
+			"description": "Sets the endpoint for the OpenTelemetry Protocol (otlp) exporter. The default is `http://localhost:4317`."
+		}
+	],
+	"hints": [
+		{
+			"values": [
+				{
+					"value": "class-method",
+					"description": "The provider for the default operation name."
+				},
+				{
+					"value": "http-path",
+					"description": "The operation name has the following form `<HTTP method>:<@Path value of endpoint’s class>/<@Path value of endpoint’s method>`. For example if the class is annotated with `@Path(\"service\")` and method `@Path(\"endpoint/{id: \\\\d+}\")` then the operation name is `GET:/service/endpoint/{id: \\\\d+}`."
+				}
+			],
+			"name": "mp.opentracing.server.operation-name-provider"
+		}
+	]
+}
